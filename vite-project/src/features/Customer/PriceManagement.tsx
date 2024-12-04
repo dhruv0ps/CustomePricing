@@ -71,7 +71,7 @@ const CustomerManagement: React.FC = () => {
   };
 
   return (
-    <div className="h-full overflow-y-auto border-l mt-2 border-gray-200 bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+    <div className="h-full overflow-y-auto  bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
       
       <div className="mb-12 flex items-center justify-between">
         <Button color="gray" onClick={() => navigate(-1)}>

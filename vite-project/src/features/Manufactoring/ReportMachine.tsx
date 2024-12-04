@@ -26,7 +26,7 @@ const ReportMachine: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen border-l border-gray-200 bg-gray-50 -mt-5 py-12 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen  bg-gray-50 -mt-5 py-12 px-4 sm:px-6 lg:px-8">
             <div className="mb-12 flex justify-start">
           <Button color="gray" onClick={() => navigate(-1)}>
             <FaChevronLeft className="mr-2 h-4 w-4" />
@@ -45,7 +45,7 @@ const ReportMachine: React.FC = () => {
           </p>
         </div>
 
-        <Card className="border-2 border-gray-200 shadow-lg mt-2">
+        <Card className=" mt-4">
           <form onSubmit={handleSubmit} className="flex flex-col gap-4">
             <div>
               <div className="mb-2 block">

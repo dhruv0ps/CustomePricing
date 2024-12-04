@@ -64,7 +64,7 @@ const MachineList: React.FC = () => {
   );
 
   return (
-    <div className="min-h-[calc(100vh-4.5rem)] border-l border-gray-200 bg-gray-50 -mt-5 py-12 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-[calc(100vh-4.5rem)] bg-gray-50 -mt-5 py-12 px-4 sm:px-6 lg:px-8">
       {/* Header */}
       <div className="mb-12 flex items-center justify-between">
         <Button color="gray" onClick={() => navigate(-1)}>

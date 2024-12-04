@@ -46,7 +46,7 @@ const CreateMachine: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen border-l border-gray-200 bg-gray-50 -mt-5 py-12 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen  bg-gray-50 -mt-5 py-12 px-4 sm:px-6 lg:px-8">
          <Button
           color="gray"
           onClick={() => navigate(-1)}
@@ -67,7 +67,7 @@ const CreateMachine: React.FC = () => {
           </p>
         </div>
 
-        <Card className="bg-white shadow-2xl p-8 mt-2">
+        <Card className="bg-white  p-8 mt-2">
 
           <form onSubmit={handleSubmit} className="flex flex-col gap-4 ">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">

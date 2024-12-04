@@ -81,7 +81,7 @@ type Option = {
           </p>
         </div>
 
-        <Card className="bg-white shadow-2xl p-8 mt-2">
+        <Card className="bg-white  p-8 mt-2">
           <form onSubmit={handleSubmit} className="space-y-6 ">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>

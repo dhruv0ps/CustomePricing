@@ -136,7 +136,7 @@ const PricingConditions = () => {
   }
 
   return (
-     <div className="min-h-screen border-l border-gray-200 bg-gray-50 -mt-5 py-12 px-4 sm:px-6 lg:px-8">
+     <div className="min-h-screen bg-gray-50  -mt-5 py-12 px-4 sm:px-6 lg:px-8">
    <Button color='gray' onClick={() => navigate(-1)}>
                     <span className='flex gap-2 items-center'><FaChevronLeft />Back</span>
                 </Button>
@@ -149,7 +149,7 @@ const PricingConditions = () => {
             Define pricing conditions for your customers efficiently.
           </p>
         </div>
-    <Card className="max-w-3xl mx-auto mt-4">
+    <Card className="max-w-3xl mx-auto mt-4 ">
       
       
       <div className="space-y-4">
@@ -179,8 +179,8 @@ const PricingConditions = () => {
                 : "N/A";
 
             return (
-              <Card key={index} className="mb-2 p-2 ">
-                <div className="flex justify-between items-center mb-2">
+              <Card key={index} className="mb-2 p-2 h-auto">
+                <div className="flex justify-between items-center mb-1">
                   <Label
                     htmlFor={`product-${index}`}
                     value={`Product ${index + 1}`}

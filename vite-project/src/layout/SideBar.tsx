@@ -87,7 +87,7 @@ const NavSideBar = ({ isSidebarOpen }: { isSidebarOpen: boolean }) => {
   return (
     <Sidebar
       aria-label="Sidebar"
-      className={`h-full overflow-hidden ${isSidebarOpen ? "" : "hidden"} w-64 bg-gray-100 dark:bg-gray-800`}
+      className={`h-screen overflow-hidden ${isSidebarOpen ? "" : "hidden"} w-64 bg-gray-100 dark:bg-gray-800 `}
     >
       <Sidebar.Items>
         <Sidebar.ItemGroup>

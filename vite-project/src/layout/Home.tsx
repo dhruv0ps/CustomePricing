@@ -26,7 +26,7 @@ const Home = observer(() => {
     <NavBar toggleSidebar={toggleSidebar} isSidebarOpen={isSidebarOpen} />
     <div className="flex flex-1 overflow-hidden">
       <NavSideBar isSidebarOpen={isSidebarOpen} />
-      <main className="flex-1 overflow-auto p-4">
+      <main className="flex-1 overflow-auto p-4 border-l border-gray-300 dark:border-gray-600">
         <Outlet />
       </main>
     </div>

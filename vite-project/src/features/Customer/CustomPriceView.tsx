@@ -45,7 +45,7 @@ const CustomerView: React.FC = () => {
   }
 
   return (
-    <div className="max-w-full mx-auto p-6">
+    <div className="max-w-full bg-gray-50  mx-auto p-6">
       <Button color="light" size="sm" onClick={() => navigate(-1)} className="mb-4">
         <HiArrowLeft className="mr-2 h-5 w-5" />
         Back
