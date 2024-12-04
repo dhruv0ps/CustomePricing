@@ -3,6 +3,8 @@ import { useParams, useNavigate } from "react-router-dom";
 import { Button, Card, Label, Select, TextInput, Alert } from "flowbite-react";
 import { HiX, HiInformationCircle } from "react-icons/hi";
 import { FaChevronLeft } from "react-icons/fa";
+
+import { toast } from "react-toastify";
 interface Condition {
   product: string;
   minQty: number | null;
@@ -41,7 +43,7 @@ const fetchData = async (id: string) => {
 };
 
 const PricingConditions = () => {
-  const { id } = useParams(); // Get the ID from the route
+  const { id } = useParams();
   const navigate = useNavigate();
 
   const [isEditMode, _setIsEditMode] = useState<boolean>(!!id);
@@ -52,7 +54,6 @@ const PricingConditions = () => {
   ]);
   const [validationMsg, setValidationMsg] = useState<string[]>([""]);
 
-  // Fetch existing data for editing if an ID is present
   useEffect(() => {
     if (id) {
       fetchData(id).then((data: any) => {
@@ -62,7 +63,9 @@ const PricingConditions = () => {
           setValidationMsg(new Array(data.conditions.length).fill(""));
         }
         setLoading(false);
-      });
+     
+
+    });
     }
   }, [id]);
 
@@ -83,26 +86,52 @@ const PricingConditions = () => {
     setValidationMsg(updatedValidationMessages);
   };
 
+  // const validateField = (
+  //   index: number,
+  //   field: keyof Condition,
+  //   value: string | number | null
+  // ) => {
+  //   const updatedValidationMsg = [...validationMsg];
+  //   if (field === "product" && typeof value === "string") {
+  //     if (!value) {
+  //       updatedValidationMsg[index] = "Product cannot be empty.";
+  //     } else {
+  //       updatedValidationMsg[index] = "";
+  //     }
+  //   } else if (field === "minQty" || field === "maxQty") {
+  //     const minQty = field === "minQty" ? Number(value) : conditions[index].minQty;
+  //     const maxQty = field === "maxQty" ? Number(value) : conditions[index].maxQty;
+  //     if (minQty !== null && maxQty !== null && minQty >= maxQty) {
+  //       updatedValidationMsg[index] =
+  //         "Minimum quantity must be less than maximum quantity.";
+  //     } else {
+  //       updatedValidationMsg[index] = "";
+  //     }
+  //   } else if (field === "price") {
+  //     if (value === null ) {
+  //       updatedValidationMsg[index] = "Price must be greater than 0.";
+  //     } else {
+  //       updatedValidationMsg[index] = "";
+  //     }
+  //   }
+  //   setValidationMsg(updatedValidationMsg);
+  // };
+
   const handleConditionChange = (
     index: number,
     field: keyof Condition,
     value: string | number | null
   ) => {
     const updatedConditions = [...conditions];
-    if (field === "product" && typeof value === "string") {
-      updatedConditions[index][field] = value;
-    } else if (
-      (field === "minQty" || field === "maxQty" || field === "price") &&
-      (typeof value === "number" || value === null)
-    ) {
-      updatedConditions[index][field] = value;
-    }
-
+  
+    // Type assertion to ensure TypeScript knows the field corresponds to Condition keys
+    (updatedConditions[index][field] as string | number | null) = value;
+  
     if (field === "minQty" || field === "maxQty") {
       const minQty = updatedConditions[index].minQty;
       const maxQty = updatedConditions[index].maxQty;
       const updatedConditionsMsg = [...validationMsg];
-
+  
       if (minQty !== null && maxQty !== null && minQty >= maxQty) {
         updatedConditionsMsg[index] =
           "Minimum quantity must be less than maximum quantity.";
@@ -111,24 +140,46 @@ const PricingConditions = () => {
       }
       setValidationMsg(updatedConditionsMsg);
     }
-
+  
     setConditions(updatedConditions);
+  };
+  
+
+  const validateAllFields = () => {
+    const updatedValidationMsg = [...validationMsg];
+    conditions.forEach((condition, index) => {
+      if (!condition.product) {
+        updatedValidationMsg[index] = "Product cannot be empty.";
+      } else if (
+        condition.minQty !== null &&
+        condition.maxQty !== null &&
+        condition.minQty >= condition.maxQty
+      ) {
+        updatedValidationMsg[index] =
+          "Minimum quantity must be less than maximum quantity.";
+      } else if (condition.price === null || condition.price <= 0) {
+        updatedValidationMsg[index] = "Price must be greater than 0.";
+      } else {
+        updatedValidationMsg[index] = "";
+      }
+    });
+    setValidationMsg(updatedValidationMsg);
+    return updatedValidationMsg.every((msg) => msg === "");
   };
 
   const handleSave = async () => {
-    const hasErrors = validationMsg.some((msg) => msg !== "");
-    if (hasErrors) {
-      alert("Please fix validation errors before saving.");
-    } else {
-      const payload = { customer, conditions };
-      if (isEditMode) {
-        console.log("Updating data with ID:", id, payload);
-      } else {
-        console.log("Adding new data:", payload);
-      }
-      alert(`Conditions ${isEditMode ? "updated" : "added"} successfully!`);
-      navigate("/customer/pricemanagment");
+    if (!validateAllFields()) {
+      toast.error("Please fix validation errors before saving.");
+      return;
     }
+    const payload = { customer, conditions };
+    if (isEditMode) {
+      console.log("Updating data with ID:", id, payload);
+    } else {
+      console.log("Adding new data:", payload);
+    }
+    toast.success(`Conditions ${isEditMode ? "updated" : "added"} successfully!`);
+    navigate("/customer/pricemanagment");
   };
 
   if (loading) {
@@ -136,41 +187,39 @@ const PricingConditions = () => {
   }
 
   return (
-     <div className="min-h-screen bg-gray-50  -mt-5 py-12 px-4 sm:px-6 lg:px-8">
-   <Button color='gray' onClick={() => navigate(-1)}>
-                    <span className='flex gap-2 items-center'><FaChevronLeft />Back</span>
-                </Button>
-      
- <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold text-gray-900 mb-4">
-            {isEditMode ? "Edit Custom Pricing" : "Add Custom Pricing"}
-          </h1>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-            Define pricing conditions for your customers efficiently.
-          </p>
-        </div>
-    <Card className="max-w-3xl mx-auto mt-4 ">
-      
-      
-      <div className="space-y-4">
-        {/* Customer Selection */}
-        <div>
-          <Label htmlFor="customer" value="Customer" />
-          <Select
-            id="customer"
-            value={customer}
-            onChange={(e) => setCustomer(e.target.value)}
-            required
-            className="text-sm"
-          >
-            <option value="Purulator">Purulator</option>
-            <option value="Dhruv">Dhruv</option>
-            <option value="Ayush">Ayush</option>
-          </Select>
-        </div>
+    <div className="min-h-screen bg-gray-50 -mt-5 py-12 px-4 sm:px-6 lg:px-8">
+      <Button color="gray" onClick={() => navigate(-1)}>
+        <span className="flex gap-2 items-center">
+          <FaChevronLeft />
+          Back
+        </span>
+      </Button>
 
-        {/* Conditions */}
-        <div>
+      <div className="text-center mb-12">
+        <h1 className="text-4xl font-bold text-gray-900 mb-4">
+          {isEditMode ? "Edit Custom Pricing" : "Add Custom Pricing"}
+        </h1>
+        <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+          Define pricing conditions for your customers efficiently.
+        </p>
+      </div>
+      <Card className="max-w-3xl mx-auto mt-4">
+        <div className="space-y-4">
+          <div>
+            <Label htmlFor="customer" value="Customer" />
+            <Select
+              id="customer"
+              value={customer}
+              onChange={(e) => setCustomer(e.target.value)}
+              required
+              className="text-sm"
+            >
+              <option value="Purulator">Purulator</option>
+              <option value="Dhruv">Dhruv</option>
+              <option value="Ayush">Ayush</option>
+            </Select>
+          </div>
+          <div>
           <h2 className="text-lg font-semibold mb-2">Conditions</h2>
           {conditions.map((condition, index) => {
             const existingPrice =
@@ -234,48 +283,49 @@ const PricingConditions = () => {
                     />
                   </div>
                   <div>
-                  <Label htmlFor={`price-${index}`} value="Price per item " />
-                  <TextInput
-                    id={`price-${index}`}
-                    type="number"
-                    value={condition.price || ""}
-                    onChange={(e) =>
-                      handleConditionChange(index, "price", Number(e.target.value))
-                    }
-                    className="text-sm"
-                  />
+                    <Label htmlFor={`price-${index}`} value="Price per item " />
+                    <TextInput
+                      id={`price-${index}`}
+                      type="number"
+                      value={condition.price || ""}
+                      onChange={(e) =>
+                        handleConditionChange(index, "price", Number(e.target.value))
+                      }
+                      className="text-sm"
+                    />
+                  </div>
                 </div>
-                </div>
-
-              
 
                 <p className="text-sm text-gray-500 mt-2">
                   Existing Price: ${existingPrice}
                 </p>
 
+
                 {validationMsg[index] && (
-                  <Alert color="failure" icon={HiInformationCircle} className="text-xs mt-2">
+                  <Alert
+                    color="failure"
+                    icon={HiInformationCircle}
+                    className="text-xs mt-2"
+                  >
                     {validationMsg[index]}
                   </Alert>
-                )}
-              </Card>
-            );
-          })}
-          <Button
-            color="light"
-            onClick={handleAddCondition}
-            className="w-full  text-sm"
-          >
-            Add Condition
+                      )}
+                      </Card>
+                    );
+                  })}
+            <Button
+              color="light"
+              onClick={handleAddCondition}
+              className="w-full text-sm"
+            >
+              Add Condition
+            </Button>
+          </div>
+          <Button color="dark" onClick={handleSave} className="w-full text-sm">
+            {isEditMode ? "UPDATE" : "SAVE"}
           </Button>
         </div>
-
-        {/* Save Button */}
-        <Button color="dark" onClick={handleSave} className="w-full text-sm">
-          {isEditMode ? "UPDATE" : "SAVE"}
-        </Button>
-      </div>
-    </Card>
+      </Card>
     </div>
   );
 };

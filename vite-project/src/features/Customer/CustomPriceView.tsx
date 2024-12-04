@@ -20,6 +20,8 @@ const mockData: Customer[] = [
   { id: 2, name: "FedExD", conditions: 2, email: "fedexd@example.com", phone: "987-654-3210" },
   { id: 3, name: "UPSkm", conditions: 1, email: "upskm@example.com", phone: "456-789-0123" },
   { id: 4, name: "PrimeM", conditions: 3, email: "primem@example.com", phone: "789-012-3456" },
+  {id : 5, name : "LogiX",conditions : 4, email : "logix@gmail.com", phone : "8906-28990-199"},
+  {id : 6, name : "TransFast",conditions : 2, email : "transfast@gmail.om", phone : "8906-28990-199"},
 ];
 
 const CustomerView: React.FC = () => {

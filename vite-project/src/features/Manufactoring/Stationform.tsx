@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { Label, TextInput, FileInput, Card } from 'flowbite-react';
 import ObjectMultiSelectDropdown from "../../components/ObjectMultiSelectDropdown";
 import { Button } from "flowbite-react";
+import {toast} from "react-toastify"
 type Option = {
     value: string;
     label: string;
@@ -46,7 +47,7 @@ type Option = {
       e.preventDefault();
   
       if (!stationName.trim() || !image) {
-        alert("Please fill in all required fields.");
+        toast.info("Please fill in all required fields.");
         return;
       }
   
@@ -97,7 +98,7 @@ type Option = {
                   onChange={(e) => setStationName(e.target.value)}
                 />
               </div>
-
+              
               <div>
                 <div className="mb-2 block mt-2">
                   <Label htmlFor="machinery" value="Select Machinery (Multi-select)" />

@@ -28,6 +28,7 @@ const ObjectMultiSelectDropdown: React.FC<ObjectMultiSelectDropdownProps> = ({
   const handleSelect = (selectedLabel: string) => {
     if (!value.includes(selectedLabel)) {
       onChange([...value, selectedLabel]);
+      setIsOpen(false)
     }
   };
 
@@ -36,7 +37,7 @@ const ObjectMultiSelectDropdown: React.FC<ObjectMultiSelectDropdownProps> = ({
   };
 
   return (
-    <div className="relative w-full md:w-80">
+    <div className="relative  md:w-80">
       {/* Dropdown Trigger */}
       <div
         className="border border-gray-300 p-2 rounded cursor-pointer flex justify-between items-center"
@@ -74,6 +75,7 @@ const ObjectMultiSelectDropdown: React.FC<ObjectMultiSelectDropdownProps> = ({
             <div
               key={label}
               className="bg-blue-500 text-black px-3 py-1 rounded-full flex items-center"
+              style={{backgroundColor:"lightblue"}}
             >
               <span>{label}</span>
               <button

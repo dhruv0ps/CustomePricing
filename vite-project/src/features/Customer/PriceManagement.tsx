@@ -39,19 +39,19 @@ const CustomerManagement: React.FC = () => {
           customer.name.toLowerCase().includes(lowerCaseSearchText)
         )
       );
-      setCurrentPage(1); // Reset to page 1 after filtering
+      setCurrentPage(1); 
     }, 300);
 
     return () => clearTimeout(timeoutId);
   }, [searchText]);
 
-  // Get paginated customers
+  
   const paginatedCustomers = filteredCustomers.slice(
     (currentPage - 1) * ITEMS_PER_PAGE,
     currentPage * ITEMS_PER_PAGE
   );
 
-  // Handle delete
+ 
   const handleDelete = async (id: number) => {
     const confirm = await showConfirmationModal("Are you sure you want to delete this customer?");
     if (confirm) {
@@ -60,12 +60,12 @@ const CustomerManagement: React.FC = () => {
     }
   };
 
-  // Handle edit
+ 
   const handleEdit = (id: number): void => {
     navigate(`/customer/customepricing/${id}`);
   };
 
-  // Handle view
+  
   const handleView = (id: number): void => {
     navigate(`/customepricing/view/${id}`);
   };

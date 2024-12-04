@@ -10,6 +10,8 @@ import ReportMachine from './features/Manufactoring/ReportMachine';
 import ViewMachine from './features/Manufactoring/ViewMachine';
 import StationForm from './features/Manufactoring/Stationform';
 
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
   const router = createBrowserRouter([
@@ -58,7 +60,12 @@ function App() {
    
   ]);
 
-  return <RouterProvider router={router} />;
+  return (
+    <>
+      <RouterProvider router={router} />
+      <ToastContainer position="top-right" autoClose={3000} />
+    </>
+  );
 }
 
 export default App;

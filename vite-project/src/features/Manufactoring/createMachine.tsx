@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { FaChevronLeft } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
-import { Button, Card, Label, TextInput, FileInput } from "flowbite-react";
+import { Button, Card, Label, TextInput, FileInput, Alert } from "flowbite-react";
+import {toast} from "react-toastify";
 
 interface FormState {
   machineName: string;
@@ -13,9 +14,29 @@ const CreateMachine: React.FC = () => {
     machineName: "",
     image: null,
   });
+  const[errors,setErrors] = useState<{machineName? :string ; image? :string}>({})
   const [loading, setLoading] = useState<boolean>(false);
   const navigate = useNavigate();
 
+
+  const validateForm = () => {
+    const newerrors :  { machineName?: string; image?: string } = {};
+
+    if(!formState.machineName.trim()){
+      newerrors.machineName = "Machine Name is required"
+    }
+
+    if(!formState.image){
+      newerrors.image = "Image is required" 
+    }else if(formState.image.size>2 *1024 *1024){
+      newerrors.image = "Image size must not exceed 2 MB"
+    }
+
+    setErrors(newerrors);
+    return Object.keys(newerrors).length === 0;
+  }
+
+ 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormState((prev) => ({
@@ -35,14 +56,16 @@ const CreateMachine: React.FC = () => {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoading(true);
-
-    // Simulate form submission or API call
+  if(!validateForm()){
+    return;
+  }
+    
     setTimeout(() => {
       console.log("Form Submitted:", formState);
       setLoading(false);
-      // Optionally navigate back or to a success page
-      // navigate(-1);
-    }, 2000);
+      toast.success("Machine added sucessfully")
+      navigate("/manufacturer/listmachine")
+    }, 1000);
   };
 
   return (
@@ -84,7 +107,9 @@ const CreateMachine: React.FC = () => {
                   placeholder="Machine name"
                 />
               </div>
-
+{errors.machineName && (
+  <Alert color="failure" className="mt-2">{errors.machineName}</Alert>
+)}
               <div>
                 <div className="mb-2 block mt-4">
                   <Label htmlFor="image" value="Upload Image (1024x1024)" />

@@ -16,7 +16,6 @@ interface Machine {
   reportHistory: Report[];
 }
 
-// Mock Data
 const mockMachines: Machine[] = [
   {
     id: 1,
